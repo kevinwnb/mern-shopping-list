@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const items = require('./routes/api/items');
 const path = require('path');
 
 require('dotenv').config();
@@ -15,15 +14,16 @@ app.use(bodyParser.json());
 const db = process.env.ATLAS_URI;
 
 // Connect to Mongo
-mongoose.connect(db)
+mongoose.connect(db, { useNewUrlParser: true, useCreateIndex: true })
     .then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err));
 
 // Use Routes
-app.use('/api/items', items);
+app.use('/api/items', require('./routes/api/items'));
+app.use('/api/users', require('./routes/api/users'));
 
 // Serve static assets if in production
-if(process.env.NODE_ENV === 'production'){
+if (process.env.NODE_ENV === 'production') {
     // Set static folder
     app.use(express.static('client/build'));
 
