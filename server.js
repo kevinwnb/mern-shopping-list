@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const path = require('path');
 
 require('dotenv').config();
@@ -8,7 +7,7 @@ require('dotenv').config();
 const app = express();
 
 // Bodyparser Middleware
-app.use(bodyParser.json());
+app.use(express.json());
 
 // DB Config
 const db = process.env.ATLAS_URI;
@@ -21,6 +20,7 @@ mongoose.connect(db, { useNewUrlParser: true, useCreateIndex: true })
 // Use Routes
 app.use('/api/items', require('./routes/api/items'));
 app.use('/api/users', require('./routes/api/users'));
+app.use('/api/auth', require('./routes/api/auth'));
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
